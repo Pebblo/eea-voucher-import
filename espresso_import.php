@@ -42,7 +42,7 @@ function ee4_promo_import_admin_page()
 }
 add_action('admin_menu', 'ee4_promo_import_admin_page');
 
-function espresso_ee4_coupon_import()
+function espresso_ee4_promo_import()
 {
     //Ensure EVENT_ESPRESSO_UPLOAD_DIR has been setup on this site and is writable.
     EEH_File::ensure_folder_exists_and_is_writable(EVENT_ESPRESSO_UPLOAD_DIR);
