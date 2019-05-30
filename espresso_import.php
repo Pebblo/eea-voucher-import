@@ -1,4 +1,4 @@
-<?php
+<?php defined('ABSPATH') || exit('No direct script access allowed');
 /*
     Plugin Name: Event Espresso - EE4 Voucher Import
     Plugin URI: http://eventespresso.com/
