@@ -73,7 +73,7 @@ function espresso_ee4_promo_import()
             <?php voucher_uploader(1, array("csv"), 1048576, EVENT_ESPRESSO_UPLOAD_DIR); ?>
         </li>
     </ul>
-    <form action='admin.php?page=espresso_ee4_coupon_import&action=voucher_import' method='post' enctype='multipart/form-data'>
+    <form action='admin.php?page=espresso_ee4_promo_import&action=voucher_import' method='post' enctype='multipart/form-data'>
         <table class="form-table" id="promotion-details-form">
             <tr>
                 <th scope="row">
