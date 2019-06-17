@@ -44,6 +44,9 @@ add_action('admin_menu', 'ee4_promo_import_admin_page');
 
 function espresso_ee4_promo_import()
 {
+    // Set up max_file_size var.
+    $max_file_size = 1048576;
+
     //Ensure EVENT_ESPRESSO_UPLOAD_DIR has been setup on this site and is writable.
     EEH_File::ensure_folder_exists_and_is_writable(EVENT_ESPRESSO_UPLOAD_DIR);
 
@@ -70,7 +73,7 @@ function espresso_ee4_promo_import()
                 <li>The file name should be vouchers.csv in order for it to work.</li>
                 <li>One final note, you will see that the header row, first column has a 0 while other rows have a 1.  This tells the upload to ignore rows that have the 0 identifier and only use rows with the 1.</li>
             </ol>
-            <?php voucher_uploader(1, array("csv"), 1048576, EVENT_ESPRESSO_UPLOAD_DIR); ?>
+            <?php voucher_uploader(1, array("csv"), $max_file_size, EVENT_ESPRESSO_UPLOAD_DIR); ?>
         </li>
     </ul>
     <form action='admin.php?page=espresso_ee4_promo_import&action=voucher_import' method='post' enctype='multipart/form-data'>
@@ -254,7 +257,7 @@ function voucher_uploader(
                             $error_messages .= '<p>'.$origfilename . " had an invalid file extension, not uploaded</p>";
                     }
                 } else {
-                    $error_messages .= '<p>'.$origfilename . " was not successfully uploaded</p>";
+                    $error_messages .= '<p>The file was not successfully uploaded</p>';
                 }
             }
         }
@@ -318,7 +321,7 @@ function load_vouchers_to_db($success_messages, $error_messages, $upload_dir, $f
         // Add voucher data
         $promotion_values = array(
             'PRO_ID' => 0,
-            'PRO_code' => $promo_code,
+            'PRO_code' => sanitize_text_field($promo_code),
             'PRO_scope' => !empty($_POST['PRO_scope']) ? sanitize_text_field($_POST['PRO_scope']) : 'Event',
             'PRO_start' => !empty($_POST['PRO_start']) ? sanitize_text_field($_POST['PRO_start']) : null,
             'PRO_end' => !empty($_POST['PRO_end']) ? sanitize_text_field($_POST['PRO_end']) : null,
@@ -360,7 +363,7 @@ function load_vouchers_to_db($success_messages, $error_messages, $upload_dir, $f
             $promotion_obj = EE_Promotion_Object::new_instance(
                 array(
                     'PRO_ID'   => $promotion->ID(),
-                    'OBJ_ID'   => $_POST['PRO_event_id'],
+                    'OBJ_ID'   => is_numeric($_POST['PRO_event_id']) ? $_POST['PRO_event_id'] : 0,
                     'POB_type' => 'Event',
                     'POB_used' => 0
                 )
